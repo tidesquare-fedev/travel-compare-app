@@ -1,36 +1,37 @@
+// ComparisonPage.jsx
 import React from 'react';
 import ComparisonTable from './ComparisonTable';
+import { ArrowLeftIcon } from '../common/Icons';
 
-function ComparisonPage({ comparisonItems, onRemoveFromCart, onGoBack, allProducts }) {
-  if (comparisonItems.length === 0) {
-    return (
-      <div className="p-8 text-center">
-        <h2 className="text-2xl font-bold mb-4">비교할 상품이 없습니다</h2>
-        <button
-          onClick={onGoBack}
-          className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg transition-colors"
-        >
+const ComparisonPage = ({ selectedItems = [], onRemoveItem = () => {}, onReset = () => {}, onNavigate }) => {
+  return (
+    <div className="w-full">
+      <div className="mb-8">
+        <button onClick={onNavigate} className="flex items-center text-gray-600 hover:text-indigo-600 font-semibold">
+          <ArrowLeftIcon />
           상품 목록으로 돌아가기
         </button>
       </div>
-    );
-  }
-
-  return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-gray-800">상품 비교</h1>
-        <button
-          onClick={onGoBack}
-          className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg transition-colors"
-        >
-          뒤로 가기
-        </button>
-      </div>
-      
-      <ComparisonTable itemsToCompare={comparisonItems} onRemoveFromCart={onRemoveFromCart} />
+      {selectedItems.length === 0 ? (
+        <div className="text-center py-10 px-4 bg-white rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold text-gray-700">비교할 상품이 없습니다.</h2>
+            <p className="text-gray-500 mt-2">상품 목록에서 상품을 추가해주세요.</p>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-3xl font-bold">상품 비교</h2>
+            <button onClick={onReset} className="bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300">
+              선택 초기화
+            </button>
+          </div>
+          <div className="bg-white shadow-lg rounded-lg">
+            <ComparisonTable items={selectedItems} onRemoveItem={onRemoveItem} />
+          </div>
+        </>
+      )}
     </div>
   );
-}
+};
 
 export default ComparisonPage;
